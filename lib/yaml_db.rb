@@ -24,7 +24,7 @@ module YamlDb
   module Utils
     def self.chunk_records(records)
       yaml = [ records ].to_yaml
-      yaml.sub!("--- \n", "")
+      yaml.sub!("---\s?\n", "")
       yaml.sub!('- - -', '  - -')
       yaml
     end
@@ -38,6 +38,7 @@ module YamlDb
       io.write({ table => { 'columns' => table_column_names(table) } }.to_yaml)
     end
 
+    # FIXME This isn't being used?
     def self.dump_table_records(io, table)
       table_record_header(io)
 
@@ -68,8 +69,7 @@ module YamlDb
 
   class Railtie < Rails::Railtie
     rake_tasks do
-      load File.expand_path('../tasks/yaml_db_tasks.rake', 
-__FILE__)
+      load File.expand_path('../tasks/yaml_db_tasks.rake', __FILE__)
     end
   end
 
